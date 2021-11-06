@@ -2,7 +2,13 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton
 
+numbers = list()
+signs = list()
+
 class Window(QWidget):
+
+
+
     def __init__(self):
         super(Window, self).__init__()
 
@@ -115,58 +121,69 @@ class Window(QWidget):
         self.label.setText(self.label.text() + "9")
 
     def _plus(self):
-        self.label.setText(self.label.text() + "+")
+        if len(numbers) == 0 and len(signs) == 0:
+            signs.append("+")
+            numbers.append(float(self.label.text()))
+            self.label.setText("")
+        elif self.label.text() == "":
+            self.label.setText("WRONG ACTION")
+        elif len(numbers) > 0:
+            self.label.setText("WRONG ACTION")
+        else:
+            self.label.setText("WRONG ACTION")
 
     def _subtract(self):
-        self.label.setText(self.label.text() + "-")
+        if len(numbers) == 0 and len(signs) == 0:
+            signs.append("-")
+            numbers.append(float(self.label.text()))
+            self.label.setText("")
+        elif self.label.text() == "":
+            self.label.setText("WRONG ACTION")
+        elif len(numbers) > 0:
+            self.label.setText("WRONG ACTION")
+        else:
+            self.label.setText("WRONG ACTION")
 
     def _multiple(self):
-        self.label.setText(self.label.text() + "*")
+        if len(numbers) == 0 and len(signs) == 0:
+            signs.append("*")
+            numbers.append(float(self.label.text()))
+            self.label.setText("")
+        elif self.label.text() == "":
+            self.label.setText("WRONG ACTION")
+        elif len(numbers) > 0:
+            self.label.setText("WRONG ACTION")
+        else:
+            self.label.setText("WRONG ACTION")
 
     def _division(self):
-        self.label.setText(self.label.text() + "/")
+        if len(numbers) == 0 and len(signs) == 0:
+            signs.append("/")
+            numbers.append(float(self.label.text()))
+            self.label.setText("")
+        elif self.label.text() == "":
+            self.label.setText("WRONG ACTION")
+        elif len(numbers) > 0:
+            self.label.setText("WRONG ACTION")
+        else:
+            self.label.setText("WRONG ACTION")
 
     def _equal(self):
+        numbers.append(float(self.label.text()))
+        result = ""
+        if signs[0] == "+": result = numbers[0] + numbers[1]
+        elif signs[0] == "-": result = numbers[0] - numbers[1]
+        elif signs[0] == "*": result = numbers[0] * numbers[1]
+        elif signs[0] == "/" and (numbers[1] != 0): result = numbers[0] / numbers[1]
+        elif numbers[1] == 0: self.label.setText("WRONG ACTION")
 
-        equasion = self.label.text()
+
+        self.equal.setText(str(result))
+        resultPrev = result
         self.label.setText("")
 
-        str(equasion)
-
-        print("equasion: ", equasion)
-
-
-        numbers = list()
-        signs = list()
-        num = ""
-
-        for i in range(len(equasion)):
-            if equasion[i] not in "+-*/":
-                num += equasion[i]
-            else:
-                numbers.append(float(num))
-                signs.append(equasion[i])
-                num = ""
-            if (i == len(equasion) - 1):
-                numbers.append(float(num))
-
-
-        print("numbers: ", numbers)
-
-        num = numbers[0]
-        print(num)
-        for i in range(len(signs)):
-            if signs[i] == "*":
-                num = num * numbers[i + i]
-            elif signs[i] == "/" and numbers[i+1] != 0:
-                num = num / numbers[i + 1]
-            elif signs[i] == "+":
-                num = num + numbers[i+1]
-            elif signs[i] == "-":
-                num = num - numbers[i+1]
-
-        self.equal.setText(str(num))
-
+        numbers.clear()
+        signs.clear()
 
 
 
