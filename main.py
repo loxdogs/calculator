@@ -122,11 +122,12 @@ class Window(QWidget):
         self.equal.clear()
 
     def _root(self):
-        if len(signs) == 0:
+        if len(signs) == 0 and len(self.showLine.text()) > 0 :
             self.equal.setText(str(sqrt(float(self.showLine.text()))))
             self.showLine.clear()
-        elif float(self.showLine.text()) < 0:
-            self.equal.setText("error")
+        elif len(self.showLine.text()) > 0:
+            if float(self.showLine.text()) < 0:
+                self.equal.setText("error")
         else:
             self.equal.setText("error")
 
