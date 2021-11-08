@@ -122,13 +122,22 @@ class Window(QWidget):
         self.equal.clear()
 
     def _root(self):
-        self.equal.setText(sqrt(self.showLine.text()))
-        self.showLine.clear()
+        if len(signs) == 0:
+            self.equal.setText(str(sqrt(float(self.showLine.text()))))
+            self.showLine.clear()
+        elif float(self.showLine.text()) < 0:
+            self.equal.setText("error")
+        else:
+            self.equal.setText("error")
 
     def _dot(self):
-        if len(signs) == 0:
+        if "." not in self.showLine.text() and len(self.showLine.text()) != 0:
             self.showLine.setText(self.showLine.text() + ".")
-
+        elif "." in self.showLine.text():
+            self.equal.setText("error")
+            self.showLine.clear()
+        else:
+            self.equal.setText("error")
     def _zero(self):
         if len(signs) == 0:
             self.showLine.setText(self.showLine.text() + "0")
@@ -245,8 +254,10 @@ class Window(QWidget):
             i.clear()
         elif len(numbers) == 1 or len(signs) == 1:
             self.equal.setText("error")
+            self.showLine.clear()
         else:
             self.equal.setText("error")
+            self.showLine.clear()
 
 
     def _multiple(self):
@@ -255,8 +266,10 @@ class Window(QWidget):
             signs.append("*")
         elif len(numbers) == 1 or len(signs) == 1:
             self.equal.setText("error")
+            self.showLine.clear()
         else:
             self.equal.setText("error")
+            self.showLine.clear()
 
     def _division(self):
         if len(numbers) == 0 and len(signs) == 0:
@@ -264,24 +277,34 @@ class Window(QWidget):
             signs.append("/")
         elif len(numbers) == 1 or len(signs) == 1:
             self.equal.setText("error")
+            self.showLine.clear()
         else:
             self.equal.setText("error")
+            self.showLine.clear()
 
     def _equal(self):
-        i.clear()
         numbers.append(float(self.showLine.text()))
-        result = ""
-        if signs[0] == "+": result = numbers[0] + numbers[1]
-        elif signs[0] == "-": result = numbers[0] - numbers[1]
-        elif signs[0] == "*": result = numbers[0] * numbers[1]
-        elif signs[0] == "/" and (numbers[1] != 0): result = numbers[0] / numbers[1]
-        elif numbers[1] == 0: self.showLine.setText("WRONG ACTION")
+        result = "error"
 
+        if signs[0] == "+":
+            result = numbers[0] + numbers[1]
+        elif signs[0] == "-":
+            result = numbers[0] - numbers[1]
+        elif signs[0] == "*":
+            result = numbers[0] * numbers[1]
+        elif signs[0] == "/" and (numbers[1] != 0):
+            result = numbers[0] / numbers[1]
+        elif signs[0] == "/" and (numbers[1] == 0):
+            self.equal.setText("error")
+            self.showLine.clear()
+        else:
+            self.equal.setText("error")
+            self.showLine.clear()
 
         self.equal.setText(str(result))
-        resultPrev = result
         self.showLine.setText("")
 
+        i.clear()
         numbers.clear()
         signs.clear()
 
