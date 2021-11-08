@@ -1,186 +1,286 @@
 import sys
-
+from math import sqrt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QLineEdit, QPushButton
+
 
 numbers = list()
 signs = list()
+i = list()
 
 class Window(QWidget):
 
-
-
     def __init__(self):
+
         super(Window, self).__init__()
 
         self.setWindowTitle("calculator?")
 
+        self.setGeometry(10, 10, 400, 200)
+
         self.vbox = QVBoxLayout()
-        self.hbox = QHBoxLayout()
+        self.hbox0 = QHBoxLayout()
+        self.hbox1 = QHBoxLayout()
+        self.hbox2 = QHBoxLayout()
+        self.hbox3 = QHBoxLayout()
+        self.hbox4 = QHBoxLayout()
+        # labels here(showLine(where all numbers appear) and equal(where result appears))
+        self.showLine = QLabel("", self)
+        self.vbox.addWidget(self.showLine)
 
-        self.label = QLabel("", self)
-        self.vbox.addWidget(self.label)
-
-        self.equal = QLabel("",self)
+        self.equal = QLabel("", self)
         self.vbox.addWidget(self.equal)
 
         self.LineShow = QLineEdit()
 
-        #buttons here
-        self.buttonEqual = QPushButton("=")
-        self.vbox.addWidget(self.buttonEqual)
-        self.buttonEqual.clicked.connect(self._equal)
+        # buttons here
 
-        self.buttonZero = QPushButton("0")
-        self.vbox.addWidget(self.buttonZero)
-        self.buttonZero.clicked.connect(self._zero)
+        # button zero
+        self.btn_0 = QPushButton("0")
+        self.hbox4.addWidget(self.btn_0)
+        self.btn_0.clicked.connect(self._zero)
+        # button dot
+        self.btn_dot = QPushButton(".")
+        self.hbox4.addWidget(self.btn_dot)
+        self.btn_dot.clicked.connect(self._dot)
+        # button equal
+        self.btn_equal = QPushButton("=")
+        self.hbox4.addWidget(self.btn_equal)
+        self.btn_equal.clicked.connect(self._equal)
+        # button one
+        self.btn_1 = QPushButton("1")
+        self.hbox3.addWidget(self.btn_1)
+        self.btn_1.clicked.connect(self._one)
+        # button two
+        self.btn_2 = QPushButton("2")
+        self.hbox3.addWidget(self.btn_2)
+        self.btn_2.clicked.connect(self._two)
+        # button three
+        self.btn_3 = QPushButton("3")
+        self.hbox3.addWidget(self.btn_3)
+        self.btn_3.clicked.connect(self._three)
+        # button plus
+        self.btn_plus = QPushButton("+")
+        self.hbox3.addWidget(self.btn_plus)
+        self.btn_plus.clicked.connect(self._plus)
+        # button four
+        self.btn_4 = QPushButton("4")
+        self.hbox2.addWidget(self.btn_4)
+        self.btn_4.clicked.connect(self._four)
+        # button five
+        self.btn_5 = QPushButton("5")
+        self.hbox2.addWidget(self.btn_5)
+        self.btn_5.clicked.connect(self._five)
+        # button six
+        self.btn_6 = QPushButton("6")
+        self.hbox2.addWidget(self.btn_6)
+        self.btn_6.clicked.connect(self._six)
+        # button minus
+        self.btn_sub = QPushButton("-")
+        self.hbox2.addWidget(self.btn_sub)
+        self.btn_sub.clicked.connect(self._subtract)
+        # button seven
+        self.btn_7 = QPushButton("7")
+        self.hbox1.addWidget(self.btn_7)
+        self.btn_7.clicked.connect(self._seven)
+        # button eight
+        self.btn_8 = QPushButton("8")
+        self.hbox1.addWidget(self.btn_8)
+        self.btn_8.clicked.connect(self._eight)
+        # button nine
+        self.btn_9 = QPushButton("9")
+        self.hbox1.addWidget(self.btn_9)
+        self.btn_9.clicked.connect(self._nine)
+        # button multiply
+        self.btn_mul = QPushButton("*")
+        self.hbox1.addWidget(self.btn_mul)
+        self.btn_mul.clicked.connect(self._multiple)
+        # button clear all
+        self.btn_AC = QPushButton("AC")
+        self.hbox0.addWidget(self.btn_AC)
+        self.btn_AC.clicked.connect(self._clear)
+        # button root
+        self.btn_rt = QPushButton("√")
+        self.hbox0.addWidget(self.btn_rt)
+        self.btn_rt.clicked.connect(self._root)
+        # button divide
+        self.btn_dvd = QPushButton("/")
+        self.hbox0.addWidget(self.btn_dvd)
+        self.btn_dvd.clicked.connect(self._division)
 
-        self.buttonOne = QPushButton("1")
-        self.vbox.addWidget(self.buttonOne)
-        self.buttonOne.clicked.connect(self._one)
-
-        self.buttonTwo = QPushButton("2")
-        self.vbox.addWidget(self.buttonTwo)
-        self.buttonTwo.clicked.connect(self._two)
-
-        self.buttonThree = QPushButton("3")
-        self.vbox.addWidget(self.buttonThree)
-        self.buttonThree.clicked.connect(self._three)
-
-        self.buttonFour = QPushButton("4")
-        self.vbox.addWidget(self.buttonFour)
-        self.buttonFour.clicked.connect(self._four)
-
-        self.buttonFive = QPushButton("5")
-        self.vbox.addWidget(self.buttonFive)
-        self.buttonFive.clicked.connect(self._five)
-
-        self.buttonSix = QPushButton("6")
-        self.vbox.addWidget(self.buttonSix)
-        self.buttonSix.clicked.connect(self._six)
-
-        self.buttonSeven = QPushButton("7")
-        self.vbox.addWidget(self.buttonSeven)
-        self.buttonSeven.clicked.connect(self._seven)
-
-        self.buttonEight = QPushButton("8")
-        self.vbox.addWidget(self.buttonEight)
-        self.buttonEight.clicked.connect(self._eight)
-
-        self.buttonNine = QPushButton("9")
-        self.vbox.addWidget(self.buttonNine)
-        self.buttonNine.clicked.connect(self._nine)
-
-        self.buttonPlus = QPushButton("+")
-        self.vbox.addWidget(self.buttonPlus)
-        self.buttonPlus.clicked.connect(self._plus)
-
-        self.buttonSub = QPushButton("-")
-        self.vbox.addWidget(self.buttonSub)
-        self.buttonSub.clicked.connect(self._subtract)
-
-        self.buttonMulti = QPushButton("*")
-        self.vbox.addWidget(self.buttonMulti)
-        self.buttonMulti.clicked.connect(self._multiple)
-
-        self.buttonDiv = QPushButton("/")
-        self.vbox.addWidget(self.buttonDiv)
-        self.buttonDiv.clicked.connect(self._division)
-        #buttons end
-
+        # layouts here(the higher number the higher the row)
         self.setLayout(self.vbox)
-        self.setLayout(self.hbox)
-    # all button connections
+        self.vbox.addLayout(self.hbox0)
+        self.vbox.addLayout(self.hbox1)
+        self.vbox.addLayout(self.hbox2)
+        self.vbox.addLayout(self.hbox3)
+        self.vbox.addLayout(self.hbox4)
+
+        # buttons end
+    # all button functions
+    def _clear(self):
+        self.showLine.clear()
+        self.equal.clear()
+
+    def _root(self):
+        self.equal.setText(sqrt(self.showLine.text()))
+        self.showLine.clear()
+
+    def _dot(self):
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + ".")
+
     def _zero(self):
-        self.label.setText(self.label.text() + "0")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "0")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "0")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "0")
 
     def _one(self):
-        self.label.setText(self.label.text() + "1")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "1")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "1")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "1")
 
     def _two(self):
-        self.label.setText(self.label.text() + "2")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "2")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "2")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "2")
 
     def _three(self):
-        self.label.setText(self.label.text() + "3")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "3")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "3")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "3")
 
     def _four(self):
-        self.label.setText(self.label.text() + "4")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "4")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "4")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "4")
 
     def _five(self):
-        self.label.setText(self.label.text() + "5")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "5")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "5")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "5")
 
     def _six(self):
-        self.label.setText(self.label.text() + "6")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "6")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "6")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "6")
 
     def _seven(self):
-        self.label.setText(self.label.text() + "7")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "7")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "7")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "7")
 
     def _eight(self):
-        self.label.setText(self.label.text() + "8")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "8")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "8")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "8")
 
     def _nine(self):
-        self.label.setText(self.label.text() + "9")
+        if len(signs) == 0:
+            self.showLine.setText(self.showLine.text() + "9")
+        elif len(signs) == 1 and len(i) == 0:
+            i.append("")
+            self.showLine.clear()
+            self.showLine.setText(self.showLine.text() + "9")
+        elif len(signs) == 1 and len(i) >= 1:
+            self.showLine.setText(self.showLine.text() + "9")
 
     def _plus(self):
         if len(numbers) == 0 and len(signs) == 0:
+            numbers.append(float(self.showLine.text()))
             signs.append("+")
-            numbers.append(float(self.label.text()))
-            self.label.setText("")
-        elif self.label.text() == "":
-            self.label.setText("WRONG ACTION")
-        elif len(numbers) > 0:
-            self.label.setText("WRONG ACTION")
+        elif len(numbers) == 1 or len(signs) == 1:
+            self.equal.setText("error")
         else:
-            self.label.setText("WRONG ACTION")
+            self.equal.setText("error")
 
     def _subtract(self):
         if len(numbers) == 0 and len(signs) == 0:
+            numbers.append(float(self.showLine.text()))
             signs.append("-")
-            numbers.append(float(self.label.text()))
-            self.label.setText("")
-        elif self.label.text() == "":
-            self.label.setText("WRONG ACTION")
-        elif len(numbers) > 0:
-            self.label.setText("WRONG ACTION")
+            i.clear()
+        elif len(numbers) == 1 or len(signs) == 1:
+            self.equal.setText("error")
         else:
-            self.label.setText("WRONG ACTION")
+            self.equal.setText("error")
+
 
     def _multiple(self):
         if len(numbers) == 0 and len(signs) == 0:
+            numbers.append(float(self.showLine.text()))
             signs.append("*")
-            numbers.append(float(self.label.text()))
-            self.label.setText("")
-        elif self.label.text() == "":
-            self.label.setText("WRONG ACTION")
-        elif len(numbers) > 0:
-            self.label.setText("WRONG ACTION")
+        elif len(numbers) == 1 or len(signs) == 1:
+            self.equal.setText("error")
         else:
-            self.label.setText("WRONG ACTION")
+            self.equal.setText("error")
 
     def _division(self):
         if len(numbers) == 0 and len(signs) == 0:
+            numbers.append(float(self.showLine.text()))
             signs.append("/")
-            numbers.append(float(self.label.text()))
-            self.label.setText("")
-        elif self.label.text() == "":
-            self.label.setText("WRONG ACTION")
-        elif len(numbers) > 0:
-            self.label.setText("WRONG ACTION")
+        elif len(numbers) == 1 or len(signs) == 1:
+            self.equal.setText("error")
         else:
-            self.label.setText("WRONG ACTION")
+            self.equal.setText("error")
 
     def _equal(self):
-        numbers.append(float(self.label.text()))
+        i.clear()
+        numbers.append(float(self.showLine.text()))
         result = ""
         if signs[0] == "+": result = numbers[0] + numbers[1]
         elif signs[0] == "-": result = numbers[0] - numbers[1]
         elif signs[0] == "*": result = numbers[0] * numbers[1]
         elif signs[0] == "/" and (numbers[1] != 0): result = numbers[0] / numbers[1]
-        elif numbers[1] == 0: self.label.setText("WRONG ACTION")
+        elif numbers[1] == 0: self.showLine.setText("WRONG ACTION")
 
 
         self.equal.setText(str(result))
         resultPrev = result
-        self.label.setText("")
+        self.showLine.setText("")
 
         numbers.clear()
         signs.clear()
